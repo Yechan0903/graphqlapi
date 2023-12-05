@@ -5,10 +5,12 @@ let tweets = [
     {
         id: "1",
         text: "first one!",
+        userId: "2",
     },
     {
         id: "2",
         text: "second one!",
+        userId: "1",
     },
 ]
 
@@ -30,8 +32,14 @@ const typeDefs = gql`
         id: ID!
         firstName: String!
         lastName: String!
+        """
+        sum
+        """
         fullName: String!
     }
+    """
+    sexy guy
+    """
     type Tweet {
         id: ID!
         text: String!
@@ -65,6 +73,7 @@ const resolvers = {
             const newTweet= {
                 id: tweets.length + 1,
                 text,
+                userId,
             };
             tweets.push(newTweet);
             return newTweet;
@@ -80,6 +89,11 @@ const resolvers = {
         fullName({firstName,lastName}) {
             return `${firstName} ${lastName}`;
         },
+    },
+    Tweet: {
+        author({userId}){
+            return users.find(u => u.id === userId);
+        }
     },
 };
 
